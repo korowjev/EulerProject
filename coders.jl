@@ -16,10 +16,22 @@ function decode(pair::Int, shifts::Int, text)
   return newtext
 end
 
-outfile = open("./example.txt", "w")
-qwe = code(123,2,"asd")
-write(outfile,qwe)
-close(outfile)
+function getproblem(problem::Int, pair::Int, shifts::Int)
+    infile = open("./coded_problem_$problem.txt", "r")
+    codedproblem = readall(infile)
+    close(infile)
+    uncodedproblem = decode(pair, shifts, codedproblem)
+    outfile = open("./uncoded_problem_$problem.jl", "w")
+    write(outfile, uncodedproblem)
+    close(outfile)
+end
 
-infile = open("./example.txt", "r")
-decode(123,2,readall(infile))
+function codeproblem(problem::Int, pair::Int, shifts::Int)
+    infile = open("./uncoded_problem_$problem.jl", "r")
+    uncodedproblem = readall(infile)
+    close(infile)
+    outfile = open("./coded_problem_$problem.txt", "w")
+    codedproblem = code(pair, shifts, uncodedproblem)
+    write(outfile, codedproblem)
+    close(outfile)
+end
